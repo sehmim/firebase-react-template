@@ -4,7 +4,7 @@ import Navigation from "./Navigation";
 import * as ROUTES from "../Constants/routes";
 
 import LandingPage from "./Landingpage/landing_page";
-import SignUpPage from "./SignUp/sign_up";
+import SignUpPage from "./SignUp/sign_up_page";
 import SignInPage from "./SignIn/sign_in";
 import HomePage from "./Home/home";
 

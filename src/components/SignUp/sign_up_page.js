@@ -5,13 +5,14 @@ import { withFirebase } from '../Firebase/context';
 import { Link, withRouter } from 'react-router-dom';
 
 import { compose } from 'recompose';
-
+import { SignInLink } from '../SignIn/sign_in';
 const SignUpPage = () => {
     return (
         <div>
             <div className="container">
                 <h1 className="header center ">SIGN UP</h1>
-                <SignUpForm className=""></SignUpForm>
+                <SignUpFormComposed/>
+                <SignInLink/>
             </div>
         </div>
 
@@ -34,20 +35,20 @@ class SignUpFormBase extends Component {
     }
     
     onSubmit = event => {
-        const { email, passwordOne } = this.state;
-        
+        const { username, email, passwordOne } = this.state;
+    
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
-                .then(_authUser => {
-                    this.setState({ ...INITIAL_STATE });
-                    this.props.history.push(ROUTES.HOME);        
-                })
-                .catch(error => {
-                    this.setState({ error });
-                });
+          .then(authUser => {
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push(ROUTES.HOME);
+          })
+          .catch(error => {
+            this.setState({ error });
+          });
+    
         event.preventDefault();
-
-    }
+      };
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
@@ -68,7 +69,7 @@ class SignUpFormBase extends Component {
         username === ''
 
         return (
-            <form onSubmit={this.onSubmit}>
+            <form>
                 <input
                     name="username"
                     value={username}
@@ -106,7 +107,7 @@ class SignUpFormBase extends Component {
     }
 }
 
-const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
+const SignUpFormComposed = compose(withRouter, withFirebase)(SignUpFormBase);
 
 const SignUpLink = () => ( <p>
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
@@ -114,4 +115,4 @@ const SignUpLink = () => ( <p>
 );
 
 export default SignUpPage;
-export { SignUpForm, SignUpLink };
+export { SignUpFormComposed, SignUpLink };
